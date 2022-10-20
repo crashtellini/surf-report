@@ -10,5 +10,9 @@ import lombok.NoArgsConstructor;
 public class SurfLocationReport {
     private String quality;
     private String waveAsHumanHeight;
+    private String windDirection;
+    private Double windSpeed;
+    private Double windGust;
+
 
 }
