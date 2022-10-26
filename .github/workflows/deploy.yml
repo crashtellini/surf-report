@@ -33,9 +33,9 @@ jobs:
         run: |
           echo "$PRIVATE_KEY" > private_key.pem && chmod 600 private_key.pem
           ssh -o StrictHostKeyChecking=no -i private_key.pem ${USER_NAME}@${HOSTNAME} '
-            rm -rf /home/ubuntu/<your-repo-name>
-            git clone <your-repo-link>.git
-            cd <your-repo>
+            rm -rf /home/ubuntu/surf-report
+            git clone git@github.com:crashtellini/surf-report.git
+            cd surf-report
             git checkout master
             git pull origin master
             sudo chmod +x ./deploy.sh
