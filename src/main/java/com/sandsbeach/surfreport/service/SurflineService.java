@@ -3,6 +3,8 @@ package com.sandsbeach.surfreport.service;
 import com.sandsbeach.surfreport.adapter.surfline.SurflineAdapter;
 import com.sandsbeach.surfreport.adapter.surfline.dto.rating.SurflineRatingDto;
 import com.sandsbeach.surfreport.adapter.surfline.dto.rating.SurflineRatingsDto;
+import com.sandsbeach.surfreport.adapter.surfline.dto.tide.SurflineTidesDto;
+import com.sandsbeach.surfreport.adapter.surfline.dto.tide.SurflineTideListDto;
 import com.sandsbeach.surfreport.adapter.surfline.dto.wave.SurflineWaveDto;
 import com.sandsbeach.surfreport.adapter.surfline.dto.wave.SurflineWavesDto;
 import com.sandsbeach.surfreport.adapter.surfline.dto.wind.SurflineWindDto;
@@ -25,6 +27,7 @@ public class SurflineService {
         SurflineRatingDto surflineRating = getLastRating(locationId);
         SurflineWaveDto surflineWave = getLastWave(locationId);
         SurflineWindDto surflineWind = getlastWind(locationId);
+        SurflineTidesDto surflineTides = getlastTides(locationId);
         SurfLocationReport response = new SurfLocationReport();
 
         //Rating
@@ -38,6 +41,12 @@ public class SurflineService {
         Double windSpeed;
         Double windGust;
 
+        //Tide
+
+        String tideType;
+        Double tideHeight;
+        Long tideTime;
+
 
         // Map values and compute
         quality = convertSurflineQualityToSurfReportQuality(surflineRating.getRating().getValue());
@@ -45,6 +54,9 @@ public class SurflineService {
         windDirection = surflineWind.getDirectionType();
         windSpeed = surflineWind.getSpeed();
         windGust = surflineWind.getGust();
+        tideType = surflineTides.getType();
+        tideHeight = surflineTides.getHeight();
+        tideTime = surflineTides.getTimestamp();
 
 
         // Prepare output
@@ -53,13 +65,22 @@ public class SurflineService {
         response.setWindDirection(windDirection);
         response.setWindSpeed(windSpeed);
         response.setWindGust(windGust);
+        response.setTideType(tideType);
+        response.setTideHeight(tideHeight);
+        response.setTideTime(tideTime);
 
         return response;
     }
 
+    private SurflineTidesDto getlastTides(String locationId) {
+        SurflineTideListDto surflineTideListDto = surflineAdapter.getTides().getData();
+        return surflineTideListDto.getTides().get(surflineTideListDto.getTides().size() - 427);
+
+    }
+
     private SurflineWindDto getlastWind(String locationId) {
       SurflineWindsDto surflineWindsDto = surflineAdapter.getWinds().getData();
-      return surflineWindsDto.getWind().get(surflineWindsDto.getWind().size()-1);
+      return surflineWindsDto.getWind().get(surflineWindsDto.getWind().size() - 1);
 
     }
 
@@ -76,12 +97,14 @@ public class SurflineService {
     }
 
 
+
+
     private String convertSurflineQualityToSurfReportQuality(String value) {
         switch (value) {
             case "0":
                 return "Don't even try";
             case "1":
-                return "Hope you like paddling, that's all you'll be doing";
+                return "Drink a beer instead";
             case "2":
                 return "Hmm..water is cold..suit is wet..better look at it for 40 minutes and then decide not to surf";
             case "3":
