@@ -1,4 +1,4 @@
-package com.sandsbeach.surfreport;
+package com.sandsbeach.surfreport.service;
 
 import com.sandsbeach.surfreport.model.Employee;
 import com.sandsbeach.surfreport.service.EmployeeService;

@@ -8,11 +8,24 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SurfLocationReport {
+
+    //rating
     private String quality;
+
+    //wave
     private String waveAsHumanHeight;
+
+    //wind
     private String windDirection;
     private Double windSpeed;
     private Double windGust;
+
+    //tide
+    private String tideType;
+    private Double tideHeight;
+    private Long tideTime;
+
+
 
 
 }
