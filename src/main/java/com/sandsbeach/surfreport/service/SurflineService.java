@@ -1,10 +1,12 @@
 package com.sandsbeach.surfreport.service;
 
 import com.sandsbeach.surfreport.adapter.surfline.SurflineAdapter;
+import com.sandsbeach.surfreport.adapter.surfline.dto.SurflineTimestampData;
 import com.sandsbeach.surfreport.adapter.surfline.dto.rating.SurflineRatingDto;
 import com.sandsbeach.surfreport.adapter.surfline.dto.rating.SurflineRatingsDto;
 import com.sandsbeach.surfreport.adapter.surfline.dto.tide.SurflineTidesDto;
 import com.sandsbeach.surfreport.adapter.surfline.dto.tide.SurflineTideListDto;
+import com.sandsbeach.surfreport.adapter.surfline.dto.tide.TideType;
 import com.sandsbeach.surfreport.adapter.surfline.dto.wave.SurflineWaveDto;
 import com.sandsbeach.surfreport.adapter.surfline.dto.wave.SurflineWavesDto;
 import com.sandsbeach.surfreport.adapter.surfline.dto.wind.SurflineWindDto;
@@ -43,7 +45,7 @@ public class SurflineService {
 
         //Tide
 
-        String tideType;
+        TideType tideType;
         Double tideHeight;
         Long tideTime;
 
@@ -74,13 +76,16 @@ public class SurflineService {
 
     private SurflineTidesDto getlastTides(String locationId) {
         SurflineTideListDto surflineTideListDto = surflineAdapter.getTides().getData();
-        return surflineTideListDto.getTides().get(surflineTideListDto.getTides().size() - 426);
+        return surflineAdapter.getTides().getData().getTides().stream()
+                .min(SurflineTimestampData.NEAREST)
+                .orElse(new SurflineTidesDto());
 
     }
 
     private SurflineWindDto getlastWind(String locationId) {
-      SurflineWindsDto surflineWindsDto = surflineAdapter.getWinds().getData();
-      return surflineWindsDto.getWind().get(surflineWindsDto.getWind().size() - 1);
+      return surflineAdapter.getWinds().getData().getWind().stream()
+              .min(SurflineTimestampData.NEAREST)
+              .orElse(new SurflineWindDto());
 
     }
 
