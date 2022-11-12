@@ -74,7 +74,7 @@ public class SurflineService {
 
     private SurflineTidesDto getlastTides(String locationId) {
         SurflineTideListDto surflineTideListDto = surflineAdapter.getTides().getData();
-        return surflineTideListDto.getTides().get(surflineTideListDto.getTides().size() - 427);
+        return surflineTideListDto.getTides().get(surflineTideListDto.getTides().size() - 426);
 
     }
 
