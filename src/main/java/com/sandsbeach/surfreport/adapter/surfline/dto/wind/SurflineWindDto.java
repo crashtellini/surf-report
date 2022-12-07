@@ -13,4 +13,5 @@ public class SurflineWindDto extends SurflineTimestampData {
     private double speed;
     private String directionType;
     private double gust;
+    private double direction;
 }

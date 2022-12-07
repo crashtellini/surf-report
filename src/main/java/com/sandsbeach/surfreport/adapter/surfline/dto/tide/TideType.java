@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum TideType {
     LOW("low"),
-    NORMAL("normal"),
+    NORMAL("mid"),
     HIGH("high");
 
     private final String name;
