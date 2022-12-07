@@ -5,19 +5,23 @@ import com.sandsbeach.surfreport.adapter.surfline.dto.SurflineTimestampData;
 import com.sandsbeach.surfreport.adapter.surfline.dto.rating.SurflineRatingDto;
 import com.sandsbeach.surfreport.adapter.surfline.dto.rating.SurflineRatingsDto;
 import com.sandsbeach.surfreport.adapter.surfline.dto.tide.SurflineTidesDto;
-import com.sandsbeach.surfreport.adapter.surfline.dto.tide.SurflineTideListDto;
 import com.sandsbeach.surfreport.adapter.surfline.dto.tide.TideType;
 import com.sandsbeach.surfreport.adapter.surfline.dto.wave.SurflineWaveDto;
 import com.sandsbeach.surfreport.adapter.surfline.dto.wave.SurflineWavesDto;
 import com.sandsbeach.surfreport.adapter.surfline.dto.wind.SurflineWindDto;
-import com.sandsbeach.surfreport.adapter.surfline.dto.wind.SurflineWindsDto;
 import com.sandsbeach.surfreport.model.SurfLocationReport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
 @Service
 
 public class SurflineService {
+
+    private static final String SPOT_ID = "5842041f4e65fad6a7708964";
+    private static final int DAYS = 16;
+    private static final int INTERVAL_HOURS = 1;
+    private static final boolean CORRECTED = true;
 
     @Autowired
     private SurflineAdapter surflineAdapter;
@@ -42,6 +46,7 @@ public class SurflineService {
         String windDirection;
         Double windSpeed;
         Double windGust;
+        Double direction;
 
         //Tide
 
@@ -54,6 +59,7 @@ public class SurflineService {
         quality = convertSurflineQualityToSurfReportQuality(surflineRating.getRating().getValue());
         waveAsHumanHeight = surflineWave.getSurf().getHumanRelation();
         windDirection = surflineWind.getDirectionType();
+        direction = surflineWind.getDirection();
         windSpeed = surflineWind.getSpeed();
         windGust = surflineWind.getGust();
         tideType = surflineTides.getType();
@@ -65,6 +71,7 @@ public class SurflineService {
         response.setQuality(quality);
         response.setWaveAsHumanHeight(waveAsHumanHeight);
         response.setWindDirection(windDirection);
+        response.setDirection(direction);
         response.setWindSpeed(windSpeed);
         response.setWindGust(windGust);
         response.setTideType(tideType);
@@ -75,29 +82,44 @@ public class SurflineService {
     }
 
     private SurflineTidesDto getlastTides(String locationId) {
-        SurflineTideListDto surflineTideListDto = surflineAdapter.getTides().getData();
-        return surflineAdapter.getTides().getData().getTides().stream()
+        return surflineAdapter.getTides(
+                        SPOT_ID,
+                        DAYS,
+                        INTERVAL_HOURS,
+                        CORRECTED
+                ).getData().getTides().stream()
                 .min(SurflineTimestampData.NEAREST)
                 .orElse(new SurflineTidesDto());
-
     }
 
     private SurflineWindDto getlastWind(String locationId) {
-      return surflineAdapter.getWinds().getData().getWind().stream()
-              .min(SurflineTimestampData.NEAREST)
-              .orElse(new SurflineWindDto());
-
+        return surflineAdapter.getWinds(
+                        SPOT_ID,
+                        DAYS,
+                        INTERVAL_HOURS,
+                        CORRECTED
+                ).getData().getWind().stream()
+                .min(SurflineTimestampData.NEAREST)
+                .orElse(new SurflineWindDto());
     }
 
     private SurflineWaveDto getLastWave(String locationId) {
-        SurflineWavesDto surflineWavesDto = surflineAdapter.getWaves().getData();
+        SurflineWavesDto surflineWavesDto = surflineAdapter.getWaves(
+                SPOT_ID,
+                DAYS,
+                INTERVAL_HOURS
+        ).getData();
         return surflineWavesDto.getWave().get(surflineWavesDto.getWave().size() - 1);
     }
 
 
     private SurflineRatingDto getLastRating(String locationId) {
         // TODO convert locationId to spotId, use a config class
-        SurflineRatingsDto surflineRatingsDto = surflineAdapter.getRating().getData();
+        SurflineRatingsDto surflineRatingsDto = surflineAdapter.getRating(
+                SPOT_ID,
+                DAYS,
+                INTERVAL_HOURS
+        ).getData();
         return surflineRatingsDto.getRating().get(surflineRatingsDto.getRating().size() - 1);
     }
 
@@ -121,8 +143,17 @@ public class SurflineService {
             default:
                 return "Woah! Surfline sucks";
         }
+
     }
 
-
-
+//    @Cacheable(cacheNames = SURFLINE_TOKEN_CACHE)
+//    private String getAccessToken() {
+//
+//
+//
+//
+//
+//        // TODO call feign endpoint with login info to pull a new token
+//        return "76a01cc852053203a9bea2d20404c4cd2b2b6d9e";
+//    }
 }

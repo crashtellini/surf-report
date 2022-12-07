@@ -5,10 +5,16 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
+import java.io.Serializable;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class SurfLocationReport {
+
+public class SurfLocationReport  {
+
+
 
     //rating
     private String quality;
@@ -20,11 +26,13 @@ public class SurfLocationReport {
     private String windDirection;
     private Double windSpeed;
     private Double windGust;
+    private Double direction;
 
     //tide
     private TideType tideType;
     private Double tideHeight;
     private Long tideTime;
+
 
 
 

@@ -1,6 +1,7 @@
 package com.sandsbeach.surfreport.controller;
 
 import com.sandsbeach.surfreport.model.SurfLocationReport;
+import com.sandsbeach.surfreport.service.SurfService;
 import com.sandsbeach.surfreport.service.SurflineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,11 +16,17 @@ public class SurfController {
     @Autowired
     private SurflineService surflineService;
 
+    @Autowired
+    private SurfService surfService;
+
+
+
+
 
     @CrossOrigin
     @GetMapping("/{locationId}")
     public ResponseEntity<SurfLocationReport> getSurfLocationReport(
             @PathVariable("locationId") String locationId) {
-        return new ResponseEntity<>(surflineService.getReport(locationId), HttpStatus.OK);
+        return new ResponseEntity<>(surfService.getReport(locationId), HttpStatus.OK);
     }
 }
