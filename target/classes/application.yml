@@ -23,7 +23,7 @@ spring:
 
 
 surfline:
-  
+
   url: https://services.surfline.com/kbyg
 
 

@@ -6,7 +6,6 @@ echo 'Starting to Deploy...'
 sudo apt-get update
 sudo apt-get upgrade
 yes | sudo apt install openjdk-11-jdk
-yes | sudo apt-get install nginx
 yes | sudo apt install apt-transport-https ca-certificates curl software-properties-common
 yes | curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
@@ -17,9 +16,9 @@ yes | sudo apt install docker-ce
 sudo docker rm $(sudo docker stop $(sudo docker ps -a -q --filter ancestor=demo:latest --format="{{.ID}}"))
 
 # copy nginx conf to default
-sudo cp nginx.conf /etc/nginx/conf.d/default.conf
-
-sudo systemctl restart nginx
+#sudo cp nginx.conf /etc/nginx/conf.d/default.conf
+#
+#sudo systemctl restart nginx
 
 # build dockerfile
 sudo docker build -f Dockerfile -t demo:latest .
