@@ -24,11 +24,11 @@ sudo docker rm $(sudo docker stop $(sudo docker ps -a -q --filter ancestor=demo:
 sudo docker build -f Dockerfile -t demo:latest .
 
 # run in detached mode
-sudo docker run --network=bridge -p 8080:8080 -d demo:latest
+sudo docker run --network=bridge -p 80:8080 -d demo:latest
 
 sleep 15
 
-PORT=8080
+PORT=80
 checkHealth() {
     PORT=$1
     url="http://$HOSTNAME:$PORT/actuator/health"
