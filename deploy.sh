@@ -15,10 +15,8 @@ yes | sudo apt install docker-ce
 # make sure demo docker is not running
 sudo docker rm $(sudo docker stop $(sudo docker ps -a -q --filter ancestor=demo:latest --format="{{.ID}}"))
 
-# copy nginx conf to default
-#sudo cp nginx.conf /etc/nginx/conf.d/default.conf
-#
-#sudo systemctl restart nginx
+# Add extra config
+cat ../java-config.yml >> src/main/resources/application.yml
 
 # build dockerfile
 sudo docker build -f Dockerfile -t demo:latest .
