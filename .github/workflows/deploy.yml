@@ -30,8 +30,11 @@ jobs:
           HOSTNAME: ${{ secrets.HOSTNAME  }}
           USER_NAME: ${{ secrets.USERNAME  }}
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          JAVA_CONFIG: ${{ secrets.JAVA_CONFIG  }}
         run: |
           echo "$PRIVATE_KEY" > private_key.pem && chmod 600 private_key.pem
+          echo "$JAVA_CONFIG" > java-config.yml
+          ssh -o StrictHostKeyChecking=no -i private_key.pem ${USER_NAME}@${HOSTNAME} "cat > /home/ubuntu/java-config.yml" < java-config.yml
           ssh -o StrictHostKeyChecking=no -i private_key.pem ${USER_NAME}@${HOSTNAME} '
             rm -rf /home/ubuntu/surf-report
             git clone https://github.com/crashtellini/surf-report.git

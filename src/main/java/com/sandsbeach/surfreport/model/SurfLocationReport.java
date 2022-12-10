@@ -1,12 +1,9 @@
 package com.sandsbeach.surfreport.model;
 
-import com.sandsbeach.surfreport.adapter.surfline.dto.tide.TideType;
+import com.sandsbeach.surfreport.adapter.surflies.dto.tide.TideType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
-import java.io.Serializable;
 
 @Data
 @NoArgsConstructor

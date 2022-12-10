@@ -20,11 +20,14 @@ sudo docker rm $(sudo docker stop $(sudo docker ps -a -q --filter ancestor=demo:
 #
 #sudo systemctl restart nginx
 
+# Add extra config
+cat ../java-config.yml >> src/main/resources/application.yml
+
 # build dockerfile
 sudo docker build -f Dockerfile -t demo:latest .
 
 # run in detached mode
-sudo docker run --network=bridge -p 80:8080 -d demo:latest
+sudo docker run --network=bridge -p 8080:8080 -d demo:latest
 
 sleep 15
 

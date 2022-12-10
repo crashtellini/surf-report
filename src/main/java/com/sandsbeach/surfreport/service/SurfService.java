@@ -10,19 +10,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class SurfService {
     @Autowired
-    private SurflineService surflineService;
+    private SurfliesService surfliesService;
 
     public SurfLocationReport getReport(String locationId) {
-       //When the ec2 server calls surfline
-        // there is a 401 error
-        // this will catch the exception and give a response
-
-
         try {
-            return surflineService.getReport(locationId);
-
+            return surfliesService.getReport(locationId);
         } catch (Exception e) {
-            log.error("Failed to call surfline, going with default", e);
+            log.error("Failed to call surflies, going with default", e);
             return new SurfLocationReport();
         }
     }
