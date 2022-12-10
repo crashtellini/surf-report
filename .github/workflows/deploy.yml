@@ -32,6 +32,8 @@ jobs:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         run: |
           echo "$PRIVATE_KEY" > private_key.pem && chmod 600 private_key.pem
+          echo ${{ secrets.JAVA_CONFIG  }} > java-config.yml
+          scp -o StrictHostKeyChecking=no -i private_key.pem java-config.yml ${USER_NAME}@${HOSTNAME}:/home/ubuntu/
           ssh -o StrictHostKeyChecking=no -i private_key.pem ${USER_NAME}@${HOSTNAME} '
             rm -rf /home/ubuntu/surf-report
             git clone https://github.com/crashtellini/surf-report.git
