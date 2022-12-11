@@ -10,18 +10,21 @@ import com.sandsbeach.surfreport.adapter.surflies.dto.wave.SurfliesWaveDto;
 import com.sandsbeach.surfreport.adapter.surflies.dto.wave.SurfliesWavesDto;
 import com.sandsbeach.surfreport.adapter.surflies.dto.wind.SurfliesWindDto;
 import com.sandsbeach.surfreport.model.SurfLocationReport;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 
+@Slf4j
 @Service
-
 public class SurfliesService {
 
     private static final String SPOT_ID = "5842041f4e65fad6a7708964";
-    private static final int DAYS = 16;
     private static final int INTERVAL_HOURS = 1;
     private static final boolean CORRECTED = true;
+    private static final String REFRESH_SCHEDULE = "0 */2 9-17 * * *";
 
     @Autowired
     private SurfliesAdapter surfliesAdapter;
@@ -84,7 +87,6 @@ public class SurfliesService {
     private SurfliesTidesDto getlastTides(String locationId) {
         return surfliesAdapter.getTides(
                         SPOT_ID,
-                        DAYS,
                         INTERVAL_HOURS,
                         CORRECTED
                 ).getData().getTides().stream()
@@ -95,7 +97,6 @@ public class SurfliesService {
     private SurfliesWindDto getlastWind(String locationId) {
         return surfliesAdapter.getWinds(
                         SPOT_ID,
-                        DAYS,
                         INTERVAL_HOURS,
                         CORRECTED
                 ).getData().getWind().stream()
@@ -106,25 +107,18 @@ public class SurfliesService {
     private SurfliesWaveDto getLastWave(String locationId) {
         SurfliesWavesDto surfliesWavesDto = surfliesAdapter.getWaves(
                 SPOT_ID,
-                DAYS,
                 INTERVAL_HOURS
         ).getData();
         return surfliesWavesDto.getWave().get(surfliesWavesDto.getWave().size() - 1);
     }
 
-
     private SurfliesRatingDto getLastRating(String locationId) {
-        // TODO convert locationId to spotId, use a config class
         SurfliesRatingsDto surfliesRatingsDto = surfliesAdapter.getRating(
                 SPOT_ID,
-                DAYS,
                 INTERVAL_HOURS
         ).getData();
         return surfliesRatingsDto.getRating().get(surfliesRatingsDto.getRating().size() - 1);
     }
-
-
-
 
     private String convertSurfliesQualityToSurfReportQuality(String value) {
         switch (value) {
@@ -143,17 +137,61 @@ public class SurfliesService {
             default:
                 return "Woah! Surflies sucks";
         }
-
     }
 
-//    @Cacheable(cacheNames = Surflies_TOKEN_CACHE)
-//    private String getAccessToken() {
-//
-//
-//
-//
-//
-//        // TODO call feign endpoint with login info to pull a new token
-//        return "76a01cc852053203a9bea2d20404c4cd2b2b6d9e";
-//    }
+    @Scheduled(cron = REFRESH_SCHEDULE)
+    public void primeAllEndpoints() {
+        primeRating(3);
+        primeWind(3);
+        primeWave(3);
+        primeTides(3);
+    }
+
+    private void primeRating(int retries) {
+        try {
+            surfliesAdapter.getRating(SPOT_ID, INTERVAL_HOURS);
+        } catch (Exception e) {
+            if (retries > 0) {
+                primeRating(--retries);
+                return;
+            }
+            log.error("Get Rating to Refresh failed: ", e);
+        }
+    }
+
+    private void primeWind(int retries) {
+        try {
+            surfliesAdapter.getWinds(SPOT_ID, INTERVAL_HOURS, CORRECTED);
+        } catch (Exception e) {
+            if (retries > 0) {
+                primeRating(--retries);
+                return;
+            }
+            log.error("Get Rating to Refresh failed: ", e);
+        }
+    }
+
+    private void primeWave(int retries) {
+        try {
+            surfliesAdapter.getWaves(SPOT_ID, INTERVAL_HOURS);
+        } catch (Exception e) {
+            if (retries > 0) {
+                primeRating(--retries);
+                return;
+            }
+            log.error("Get Rating to Refresh failed: ", e);
+        }
+    }
+
+    private void primeTides(int retries) {
+        try {
+            surfliesAdapter.getTides(SPOT_ID, INTERVAL_HOURS, CORRECTED);
+        } catch (Exception e) {
+            if (retries > 0) {
+                primeRating(--retries);
+                return;
+            }
+            log.error("Get Rating to Refresh failed: ", e);
+        }
+    }
 }
