@@ -6,37 +6,44 @@ import com.sandsbeach.surfreport.adapter.surflies.dto.SurfliesResponseDto;
 import com.sandsbeach.surfreport.adapter.surflies.dto.tide.SurfliesTideListDto;
 import com.sandsbeach.surfreport.adapter.surflies.dto.wave.SurfliesWavesDto;
 import com.sandsbeach.surfreport.adapter.surflies.dto.wind.SurfliesWindsDto;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import static com.sandsbeach.surfreport.config.CacheConfig.*;
+
 @FeignClient(name = "surflies", url = "${surflies.url}")
 public interface SurfliesAdapter {
 
-    @RequestMapping(method = RequestMethod.GET, value = "/spots/forecasts/rating")
+    @Cacheable(cacheNames = CACHE_NAME_SURFLIES_RATING)
+    @RequestMapping(method = RequestMethod.GET,
+            value = "${surflies.proxy.rating.params:/spots/forecasts/rating}")
     SurfliesResponseDto<SurfliesRatingsDto> getRating(
             @RequestParam("spotId") String spotId,
-            @RequestParam("days") int days,
             @RequestParam("intervalHours") int intervalHours);
 
-    @RequestMapping(method = RequestMethod.GET, value = "/spots/forecasts/wave")
+    @Cacheable(cacheNames = CACHE_NAME_SURFLIES_WAVE)
+    @RequestMapping(method = RequestMethod.GET,
+            value = "${surflies.proxy.wave.params:/spots/forecasts/wave}")
     SurfliesResponseDto<SurfliesWavesDto> getWaves(
             @RequestParam("spotId") String spotId,
-            @RequestParam("days") int days,
             @RequestParam("intervalHours") int intervalHours);
 
-    @RequestMapping(method = RequestMethod.GET, value = "/spots/forecasts/wind")
+    @Cacheable(cacheNames = CACHE_NAME_SURFLIES_WIND)
+    @RequestMapping(method = RequestMethod.GET,
+            value = "${surflies.proxy.wind.params:/spots/forecasts/wind}")
     SurfliesResponseDto<SurfliesWindsDto> getWinds(
             @RequestParam("spotId") String spotId,
-            @RequestParam("days") int days,
             @RequestParam("intervalHours") int intervalHours,
             @RequestParam("corrected") boolean corrected);
 
-    @RequestMapping(method = RequestMethod.GET, value = "/spots/forecasts/tides")
+    @Cacheable(cacheNames = CACHE_NAME_SURFLIES_TIDES)
+    @RequestMapping(method = RequestMethod.GET,
+            value = "${surflies.proxy.tides.params:/spots/forecasts/tides}")
     SurfliesResponseDto<SurfliesTideListDto> getTides(
             @RequestParam("spotId") String spotId,
-            @RequestParam("days") int days,
             @RequestParam("intervalHours") int intervalHours,
             @RequestParam("corrected") boolean corrected);
 }
