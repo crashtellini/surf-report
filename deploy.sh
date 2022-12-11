@@ -18,9 +18,6 @@ sudo docker rm $(sudo docker stop $(sudo docker ps -a -q --filter ancestor=demo:
 # Add extra config
 cat ../java-config.yml >> src/main/resources/application.yml
 
-# Add extra config
-cat ../java-config.yml >> src/main/resources/application.yml
-
 # build dockerfile
 sudo docker build -f Dockerfile -t demo:latest .
 
