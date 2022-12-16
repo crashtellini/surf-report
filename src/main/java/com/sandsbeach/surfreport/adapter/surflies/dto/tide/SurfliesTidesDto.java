@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SurfliesTidesDto extends SurfliesTimestampData {
-    private TideType type;
+    private String type;
     private Double height;
 }

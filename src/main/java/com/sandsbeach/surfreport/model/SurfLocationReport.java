@@ -26,9 +26,18 @@ public class SurfLocationReport  {
     private Double direction;
 
     //tide
-    private TideType tideType;
+    private String tideType;
     private Double tideHeight;
     private Long tideTime;
+
+    //buoys
+
+    private Double buoyHeight;
+    private Double buoyPeriod;
+    private Double buoyDirection;
+
+
+
 
 
 

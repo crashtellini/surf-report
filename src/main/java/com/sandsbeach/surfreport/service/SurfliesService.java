@@ -2,6 +2,8 @@ package com.sandsbeach.surfreport.service;
 
 import com.sandsbeach.surfreport.adapter.surflies.SurfliesAdapter;
 import com.sandsbeach.surfreport.adapter.surflies.dto.SurfliesTimestampData;
+import com.sandsbeach.surfreport.adapter.surflies.dto.buoy.SurfliesBuoyDataDto;
+import com.sandsbeach.surfreport.adapter.surflies.dto.buoy.SurfliesBuoyDataListDto;
 import com.sandsbeach.surfreport.adapter.surflies.dto.rating.SurfliesRatingDto;
 import com.sandsbeach.surfreport.adapter.surflies.dto.rating.SurfliesRatingsDto;
 import com.sandsbeach.surfreport.adapter.surflies.dto.tide.SurfliesTidesDto;
@@ -35,8 +37,9 @@ public class SurfliesService {
 
         SurfliesRatingDto surfliesRating = getLastRating(locationId);
         SurfliesWaveDto surfliesWave = getLastWave(locationId);
-        SurfliesWindDto surfliesWind = getlastWind(locationId);
-        SurfliesTidesDto surfliesTides = getlastTides(locationId);
+        SurfliesWindDto surfliesWind = getLastWind(locationId);
+        SurfliesTidesDto surfliesTides = getLastTides(locationId);
+        SurfliesBuoyDataDto surfliesBuoyDataListDto = getLatestData(locationId);
         SurfLocationReport response = new SurfLocationReport();
 
         //Rating
@@ -53,9 +56,17 @@ public class SurfliesService {
 
         //Tide
 
-        TideType tideType;
+        String tideType;
         Double tideHeight;
         Long tideTime;
+
+        //Buoys
+
+        Double buoyHeight;
+        Double buoyPeriod;
+        Double buoyDirection;
+
+
 
 
         // Map values and compute
@@ -68,6 +79,10 @@ public class SurfliesService {
         tideType = surfliesTides.getType();
         tideHeight = surfliesTides.getHeight();
         tideTime = surfliesTides.getTimestamp();
+        buoyHeight = surfliesBuoyDataListDto.getHeight();
+        buoyPeriod = surfliesBuoyDataListDto.getPeriod();
+        buoyDirection = surfliesBuoyDataListDto.getDirection();
+
 
 
         // Prepare output
@@ -80,11 +95,20 @@ public class SurfliesService {
         response.setTideType(tideType);
         response.setTideHeight(tideHeight);
         response.setTideTime(tideTime);
+        response.setBuoyHeight(buoyHeight);
+        response.setBuoyPeriod(buoyPeriod);
+        response.setBuoyDirection(buoyDirection);
 
         return response;
     }
 
-    private SurfliesTidesDto getlastTides(String locationId) {
+    private SurfliesBuoyDataDto getLatestData(String locationId) {
+        SurfliesBuoyDataListDto surfliesBuoyDataListDto = surfliesAdapter.getBuoy().getData();
+        return surfliesBuoyDataListDto.getLatestData().
+    }
+
+
+    private SurfliesTidesDto getLastTides(String locationId) {
         return surfliesAdapter.getTides(
                         SPOT_ID,
                         INTERVAL_HOURS,
@@ -94,7 +118,7 @@ public class SurfliesService {
                 .orElse(new SurfliesTidesDto());
     }
 
-    private SurfliesWindDto getlastWind(String locationId) {
+    private SurfliesWindDto getLastWind(String locationId) {
         return surfliesAdapter.getWinds(
                         SPOT_ID,
                         INTERVAL_HOURS,

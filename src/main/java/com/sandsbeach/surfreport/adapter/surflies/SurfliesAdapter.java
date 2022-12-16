@@ -1,6 +1,8 @@
 package com.sandsbeach.surfreport.adapter.surflies;
 
 
+import com.sandsbeach.surfreport.adapter.surflies.dto.buoy.SurfliesBuoyDataListDto;
+import com.sandsbeach.surfreport.adapter.surflies.dto.buoy.SurfliesBuoyResponseDto;
 import com.sandsbeach.surfreport.adapter.surflies.dto.rating.SurfliesRatingsDto;
 import com.sandsbeach.surfreport.adapter.surflies.dto.SurfliesResponseDto;
 import com.sandsbeach.surfreport.adapter.surflies.dto.tide.SurfliesTideListDto;
@@ -46,5 +48,12 @@ public interface SurfliesAdapter {
             @RequestParam("spotId") String spotId,
             @RequestParam("intervalHours") int intervalHours,
             @RequestParam("corrected") boolean corrected);
+
+    @Cacheable(cacheNames = CACHE_NAME_SURFLIES_BUOY)
+    @RequestMapping(method = RequestMethod.GET,
+            value = "${surflies.proxy.buoy.params:/buoys/nearby?latitude=34.452&longitude=-120.78}")
+    SurfliesBuoyResponseDto getBuoy();
+
+
 }
 
