@@ -38,8 +38,7 @@ public class SurfliesService {
         SurfliesRatingDto surfliesRating = getLastRating(locationId);
         SurfliesWaveDto surfliesWave = getLastWave(locationId);
         SurfliesWindDto surfliesWind = getLastWind(locationId);
-        SurfliesTidesDto surfliesTides = getLastTides(locationId);
-        SurfliesBuoyDataDto surfliesBuoyDataListDto = getLatestData(locationId);
+        SurfliesTidesDto surfliesTides = getLastTides(locationId);;
         SurfLocationReport response = new SurfLocationReport();
 
         //Rating
@@ -79,9 +78,7 @@ public class SurfliesService {
         tideType = surfliesTides.getType();
         tideHeight = surfliesTides.getHeight();
         tideTime = surfliesTides.getTimestamp();
-        buoyHeight = surfliesBuoyDataListDto.getHeight();
-        buoyPeriod = surfliesBuoyDataListDto.getPeriod();
-        buoyDirection = surfliesBuoyDataListDto.getDirection();
+
 
 
 
@@ -94,18 +91,11 @@ public class SurfliesService {
         response.setWindGust(windGust);
         response.setTideType(tideType);
         response.setTideHeight(tideHeight);
-        response.setTideTime(tideTime);
-        response.setBuoyHeight(buoyHeight);
-        response.setBuoyPeriod(buoyPeriod);
-        response.setBuoyDirection(buoyDirection);
+
 
         return response;
     }
 
-    private SurfliesBuoyDataDto getLatestData(String locationId) {
-        SurfliesBuoyDataListDto surfliesBuoyDataListDto = surfliesAdapter.getBuoy().getData();
-        return surfliesBuoyDataListDto.getLatestData().
-    }
 
 
     private SurfliesTidesDto getLastTides(String locationId) {
