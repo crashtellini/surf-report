@@ -47,4 +47,13 @@ public class CacheConfig {
                         .expireAfterAccess(56, TimeUnit.MINUTES)
                         .build());
     }
+
+    public static final String CACHE_NAME_SURFLIES_BUOY = "SURFLIES_BUOY";
+    @Bean
+    public CaffeineCache cacheSurfliesBuoys() {
+        return new CaffeineCache(CACHE_NAME_SURFLIES_BUOY,
+                Caffeine.newBuilder()
+                        .expireAfterAccess(56, TimeUnit.MINUTES)
+                        .build());
+    }
 }

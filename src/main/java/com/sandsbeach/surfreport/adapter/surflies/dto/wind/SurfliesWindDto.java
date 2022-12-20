@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SurfliesWindDto extends SurfliesTimestampData {
 
-    private double speed;
+    private Double speed;
     private String directionType;
-    private double gust;
-    private double direction;
+    private Double gust;
+    private Double direction;
 }
