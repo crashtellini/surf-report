@@ -22,7 +22,7 @@ public interface SurfliesAdapter {
     @Cacheable(cacheNames = CACHE_NAME_SURFLIES_RATING)
     @RequestMapping(method = RequestMethod.GET,
             value = "${surflies.proxy.rating.params:/spots/forecasts/rating}")
-    SurfliesResponseDto<SurfliesRatingsDto> getRating(
+    SurfliesResponseDto<SurfliesRatingsDto> getRatings(
             @RequestParam("spotId") String spotId,
             @RequestParam("intervalHours") int intervalHours);
 
