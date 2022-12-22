@@ -106,6 +106,7 @@ local.properties
 # Log file
 *.log
 log/
+demo-app.log
 
 # BlueJ files
 *.ctxt
