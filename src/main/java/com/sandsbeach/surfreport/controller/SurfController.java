@@ -20,9 +20,6 @@ public class SurfController {
     private SurfService surfService;
 
 
-
-
-
     @CrossOrigin
     @GetMapping("/{locationId}")
     public ResponseEntity<SurfLocationReport> getSurfLocationReport(

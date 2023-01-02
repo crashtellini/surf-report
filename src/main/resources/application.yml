@@ -23,6 +23,3 @@ spring:
 logging:
   file:
     name: ./log/demo-app.log
-
-surflies:
-  url: https://services.surfline.com/kbyg
