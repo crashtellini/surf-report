@@ -7,6 +7,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class SurfliesWaveSurfDto {
+public class SurfliesWaveSurfDto{
     private String humanRelation;
 }

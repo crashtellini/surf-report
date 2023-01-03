@@ -1,9 +1,10 @@
 package com.sandsbeach.surfreport.adapter.surflies.dto.rating;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.sandsbeach.surfreport.adapter.surflies.dto.SurfliesTimestampData;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class SurfliesRatingDto {
+public class SurfliesRatingDto extends SurfliesTimestampData {
     private Long timestamp;
     private Integer utcOffset;
     private SurfliesKeyValueDto rating;
