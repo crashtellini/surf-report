@@ -56,4 +56,13 @@ public class CacheConfig {
                         .expireAfterAccess(56, TimeUnit.MINUTES)
                         .build());
     }
+
+    public static final String CACHE_NAME_ARTICLES = "ARTICLES";
+    @Bean
+    public CaffeineCache cacheArticles() {
+        return new CaffeineCache(CACHE_NAME_ARTICLES,
+                Caffeine.newBuilder()
+                        .expireAfterAccess(1, TimeUnit.DAYS)
+                        .build());
+    }
 }
