@@ -24,7 +24,7 @@ public class GptAdapter {
 
     @Autowired
     public GptAdapter(@Value("${gpt.token}") String token) {
-        openAiService = new OpenAiService(token);
+        openAiService = new OpenAiService(token, 60_000);
     }
 
     public Article generateArticle(String prompt) {

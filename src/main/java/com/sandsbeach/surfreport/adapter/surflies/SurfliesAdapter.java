@@ -1,7 +1,6 @@
 package com.sandsbeach.surfreport.adapter.surflies;
 
 
-import com.sandsbeach.surfreport.adapter.surflies.dto.buoy.SurfliesBuoyDataListDto;
 import com.sandsbeach.surfreport.adapter.surflies.dto.buoy.SurfliesBuoyResponseDto;
 import com.sandsbeach.surfreport.adapter.surflies.dto.rating.SurfliesRatingsDto;
 import com.sandsbeach.surfreport.adapter.surflies.dto.SurfliesResponseDto;

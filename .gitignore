@@ -202,3 +202,4 @@ README.html
 *.iml
 .idea
 .exercism
+application-secrets.yml
