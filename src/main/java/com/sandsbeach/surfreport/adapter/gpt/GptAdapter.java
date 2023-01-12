@@ -40,7 +40,9 @@ public class GptAdapter {
 
         List<CompletionChoice> responses = openAiService.createCompletion(completionRequest).getChoices();
 
-        String body = responses.get(0).getText().trim().replaceFirst("^.*?([A-Z])", "$1");
+
+        String body = responses.get(0).getText().trim().replaceFirst("^.*?([A-Z])", "$1");;
+
         
         return Article.builder()
                 .title(generateTitle(body))
