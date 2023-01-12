@@ -3,22 +3,15 @@ package com.sandsbeach.surfreport.service;
 import com.sandsbeach.surfreport.adapter.surflies.SurfliesAdapter;
 import com.sandsbeach.surfreport.adapter.surflies.dto.SurfliesTimestampData;
 import com.sandsbeach.surfreport.adapter.surflies.dto.buoy.SurfliesBuoyDataDto;
-import com.sandsbeach.surfreport.adapter.surflies.dto.buoy.SurfliesBuoyDataListDto;
 import com.sandsbeach.surfreport.adapter.surflies.dto.rating.SurfliesRatingDto;
-import com.sandsbeach.surfreport.adapter.surflies.dto.rating.SurfliesRatingsDto;
 import com.sandsbeach.surfreport.adapter.surflies.dto.tide.SurfliesTidesDto;
-import com.sandsbeach.surfreport.adapter.surflies.dto.tide.TideType;
 import com.sandsbeach.surfreport.adapter.surflies.dto.wave.SurfliesWaveDto;
-import com.sandsbeach.surfreport.adapter.surflies.dto.wave.SurfliesWavesDto;
 import com.sandsbeach.surfreport.adapter.surflies.dto.wind.SurfliesWindDto;
 import com.sandsbeach.surfreport.model.SurfLocationReport;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-
-import javax.annotation.PostConstruct;
-import java.util.Comparator;
 
 @Slf4j
 @Service
@@ -96,6 +89,10 @@ public class SurfliesService {
         response.setWindGust(windGust);
         response.setTideType(tideType);
         response.setTideHeight(tideHeight);
+        response.setTideTime(tideTime);
+        response.setBuoyHeight(buoyHeight);
+        response.setBuoyPeriod(buoyPeriod);
+        response.setBuoyDirection(buoyDirection);
 
 
         return response;
@@ -161,7 +158,7 @@ public class SurfliesService {
             case "5":
                 return "Get out there now! Just like the other 1000 people in the line up";
             default:
-                return "Woah! Surflies sucks";
+                return "Worth a shot";
         }
     }
 
