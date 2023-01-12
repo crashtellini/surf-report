@@ -18,6 +18,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.util.Comparator;
 
 @Slf4j
 @Service
@@ -85,6 +86,7 @@ public class SurfliesService {
 
 
 
+
         // Prepare output
         response.setQuality(quality);
         response.setWaveAsHumanHeight(waveAsHumanHeight);
@@ -94,17 +96,16 @@ public class SurfliesService {
         response.setWindGust(windGust);
         response.setTideType(tideType);
         response.setTideHeight(tideHeight);
-        response.setTideTime(tideTime);
-        response.setBuoyHeight(buoyHeight);
-        response.setBuoyPeriod(buoyPeriod);
-        response.setBuoyDirection(buoyDirection);
+
 
         return response;
     }
 
+
     private SurfliesBuoyDataDto getBuoy(String locationId) {
         return surfliesAdapter.getBuoy().getData().get(0).getLatestData();
     }
+
 
 
     private SurfliesTidesDto getLastTides(String locationId) {
@@ -128,19 +129,21 @@ public class SurfliesService {
     }
 
     private SurfliesWaveDto getLastWave(String locationId) {
-        SurfliesWavesDto surfliesWavesDto = surfliesAdapter.getWaves(
-                SPOT_ID,
-                INTERVAL_HOURS
-        ).getData();
-        return surfliesWavesDto.getWave().get(surfliesWavesDto.getWave().size() - 1);
+        return surfliesAdapter.getWaves(
+                        SPOT_ID,
+                        INTERVAL_HOURS
+                ).getData().getWave().stream()
+                .min(SurfliesTimestampData.NEAREST)
+                .orElse(new SurfliesWaveDto());
     }
 
     private SurfliesRatingDto getLastRating(String locationId) {
-        SurfliesRatingsDto surfliesRatingsDto = surfliesAdapter.getRating(
-                SPOT_ID,
-                INTERVAL_HOURS
-        ).getData();
-        return surfliesRatingsDto.getRating().get(surfliesRatingsDto.getRating().size() - 1);
+        return surfliesAdapter.getRatings(
+                        SPOT_ID,
+                        INTERVAL_HOURS
+                ).getData().getRating().stream()
+                .min(SurfliesTimestampData.NEAREST)
+                .orElse(new SurfliesRatingDto());
     }
 
     private String convertSurfliesQualityToSurfReportQuality(String value) {
@@ -172,7 +175,7 @@ public class SurfliesService {
 
     private void primeRating(int retries) {
         try {
-            surfliesAdapter.getRating(SPOT_ID, INTERVAL_HOURS);
+            surfliesAdapter.getRatings(SPOT_ID, INTERVAL_HOURS);
         } catch (Exception e) {
             if (retries > 0) {
                 primeRating(--retries);

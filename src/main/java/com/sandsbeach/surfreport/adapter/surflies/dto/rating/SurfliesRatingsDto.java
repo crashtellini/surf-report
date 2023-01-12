@@ -14,7 +14,7 @@ public class SurfliesRatingsDto {
         return rating;
     }
 
-    public void setRating(List<SurfliesRatingDto> rating) {
+    public void setRatings(List<SurfliesRatingDto> rating) {
         this.rating = rating;
     }
 }
