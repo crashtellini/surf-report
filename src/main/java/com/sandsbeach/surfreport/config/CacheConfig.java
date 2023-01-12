@@ -17,7 +17,7 @@ public class CacheConfig {
     public CaffeineCache cacheSurfliesRating() {
         return new CaffeineCache(CACHE_NAME_SURFLIES_RATING,
                 Caffeine.newBuilder()
-                        .expireAfterAccess(56, TimeUnit.MINUTES)
+                        .expireAfterWrite(56, TimeUnit.MINUTES)
                         .build());
     }
 
@@ -26,7 +26,7 @@ public class CacheConfig {
     public CaffeineCache cacheSurfliesWave() {
         return new CaffeineCache(CACHE_NAME_SURFLIES_WAVE,
                 Caffeine.newBuilder()
-                        .expireAfterAccess(56, TimeUnit.MINUTES)
+                        .expireAfterWrite(56, TimeUnit.MINUTES)
                         .build());
     }
 
@@ -35,7 +35,7 @@ public class CacheConfig {
     public CaffeineCache cacheSurfliesWind() {
         return new CaffeineCache(CACHE_NAME_SURFLIES_WIND,
                 Caffeine.newBuilder()
-                        .expireAfterAccess(56, TimeUnit.MINUTES)
+                        .expireAfterWrite(56, TimeUnit.MINUTES)
                         .build());
     }
 
@@ -44,7 +44,7 @@ public class CacheConfig {
     public CaffeineCache cacheSurfliesTides() {
         return new CaffeineCache(CACHE_NAME_SURFLIES_TIDES,
                 Caffeine.newBuilder()
-                        .expireAfterAccess(56, TimeUnit.MINUTES)
+                        .expireAfterWrite(56, TimeUnit.MINUTES)
                         .build());
     }
 
@@ -53,7 +53,7 @@ public class CacheConfig {
     public CaffeineCache cacheSurfliesBuoys() {
         return new CaffeineCache(CACHE_NAME_SURFLIES_BUOY,
                 Caffeine.newBuilder()
-                        .expireAfterAccess(56, TimeUnit.MINUTES)
+                        .expireAfterWrite(56, TimeUnit.MINUTES)
                         .build());
     }
 
@@ -62,7 +62,7 @@ public class CacheConfig {
     public CaffeineCache cacheArticles() {
         return new CaffeineCache(CACHE_NAME_ARTICLES,
                 Caffeine.newBuilder()
-                        .expireAfterAccess(1, TimeUnit.DAYS)
+                        .expireAfterWrite(1, TimeUnit.DAYS)
                         .build());
     }
 }
